@@ -1,17 +1,24 @@
 spring:
   application:
     name: api-gateway
-  config:
-    import: optional:configserver:http://localhost:8888
-  cloud:
-    gateway:
-      route-configs:
-      - id: auth-service
-        uri: lb://auth-service
-        predicates:
-          - Path=/auth-service/**
 
-      - id: patient-service
-        uri: lb://patient-service
-        predicates:
-          - Path=/patient-service/**
+  cloud:
+    config:
+      import: optional:configserver:http://localhost:8888
+
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true   # enables service discovery via Eureka or other registry
+          routes:
+            - id: auth-service
+              uri: lb://auth-service
+              predicates:
+                - Path=/auth-service/**
+
+            - id: patient-service
+              uri: lb://patient-service
+              predicates:
+                - Path=/patient-service/**
