@@ -3,10 +3,12 @@ package com.smarthospital.securitylib.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.context.annotation.Configuration;
 
 import java.security.Key;
 import java.util.Date;
 
+@Configuration
 public class JwtUtil {
 
     private static final String SECRET =
@@ -15,8 +17,7 @@ public class JwtUtil {
     private static final Key KEY =
             Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    public static String generateToken(String username) {
-
+    public  String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())

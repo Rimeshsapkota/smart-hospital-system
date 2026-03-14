@@ -1,25 +1,24 @@
 package com.smarthospital.securitylib.filter;
 
-
 import com.smarthospital.securitylib.jwt.JwtUtil;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import org.springframework.security.authentication.*;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 
-import java.io.IOException;
+import reactor.core.publisher.Mono;
 
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+@Component
+public class JwtAuthenticationFilter implements WebFilter {
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
-            throws ServletException, IOException {
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
-        String header = request.getHeader("Authorization");
+        String header = exchange.getRequest()
+                .getHeaders()
+                .getFirst("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
 
@@ -27,19 +26,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (JwtUtil.validateToken(token)) {
 
-                String username =
-                        JwtUtil.extractUsername(token);
+                String username = JwtUtil.extractUsername(token);
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 username, null, null);
 
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(auth);
+                return chain.filter(exchange)
+                        .contextWrite(
+                                ReactiveSecurityContextHolder
+                                        .withAuthentication(auth));
             }
         }
 
-        filterChain.doFilter(request, response);
+        return chain.filter(exchange);
     }
 }

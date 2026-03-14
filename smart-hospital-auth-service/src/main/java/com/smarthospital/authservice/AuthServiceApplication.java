@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@ComponentScan(basePackages = "com.smarthospital")
 public class AuthServiceApplication {
 
 	public static void main(String[] args) {
