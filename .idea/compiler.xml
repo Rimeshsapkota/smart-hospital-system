@@ -20,7 +20,6 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="smart-hospital-common-lib" />
-        <module name="smart-hospital-security-lib" />
       </profile>
       <profile name="Annotation profile for smart-hospital-auth-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -32,6 +31,9 @@
         <module name="smart-hospital-auth-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="smart-hospital-security-lib" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

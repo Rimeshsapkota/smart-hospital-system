@@ -1,7 +1,6 @@
 server:
   port: 8145
-  servlet:
-    context-path: /patient-service
+
 
 spring:
   cloud:

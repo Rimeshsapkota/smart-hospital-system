@@ -1,12 +1,12 @@
 package com.smarthospital.authservice.service;
 
+import com.smarthospital.authservice.JwtUtil;
 import com.smarthospital.authservice.dto.AuthResponse;
 import com.smarthospital.authservice.dto.LoginRequest;
 import com.smarthospital.authservice.dto.RegisterRequest;
 import com.smarthospital.authservice.enums.RoleType;
 import com.smarthospital.authservice.model.User;
 import com.smarthospital.authservice.repository.UserRepository;
-import com.smarthospital.securitylib.jwt.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

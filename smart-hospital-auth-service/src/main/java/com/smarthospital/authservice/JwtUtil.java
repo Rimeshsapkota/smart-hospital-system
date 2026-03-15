@@ -1,7 +1,8 @@
-package com.smarthospital.securitylib.jwt;
+package com.smarthospital.authservice;
 
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.context.annotation.Configuration;
 

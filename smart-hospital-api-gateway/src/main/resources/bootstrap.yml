@@ -11,7 +11,18 @@ spring:
         webflux:
           discovery:
             locator:
-              enabled: true   # enables service discovery via Eureka or other registry
+              enabled: true
+          globalcors:
+            cors-configuration:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedHeaders: "*"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - PATCH
           routes:
             - id: auth-service
               uri: lb://auth-service
@@ -22,3 +33,4 @@ spring:
               uri: lb://patient-service
               predicates:
                 - Path=/patient-service/**
+
