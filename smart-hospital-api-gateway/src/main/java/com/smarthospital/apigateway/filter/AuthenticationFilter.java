@@ -14,23 +14,30 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Autowired
     private ApiGateWayJwtUtils jwtUtils;
 
+    @Autowired
+    private RouterValidator routerValidator;
+
     @Override
     public GatewayFilter apply(Authentication config) {
         return((exchange, chain) -> {
-            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
-                throw new RuntimeException("missing authorization header");
-            }
-            String authHeader= Objects.requireNonNull(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).getFirst();
-            if (authHeader!=null && authHeader.startsWith("Bearer ")){
-                 authHeader=authHeader.substring(7);
-                 try{
-                     jwtUtils.validateToken(authHeader);
+            if (routerValidator.isSecured.test(exchange.getRequest())) {
+                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    throw new RuntimeException("missing authorization header");
+                }
+                String authHeader = Objects.requireNonNull(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).getFirst();
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    authHeader = authHeader.substring(7);
+                    try {
+                        jwtUtils.validateToken(authHeader);
 
-                 }catch (Exception e){
-                     throw new RuntimeException("An unauthorized access to run application");
-                 }
+                    } catch (Exception e) {
+                        throw new RuntimeException("An unauthorized access to run application");
+                    }
+                }
             }
             return chain.filter(exchange);
         });
+
     }
+
 }
