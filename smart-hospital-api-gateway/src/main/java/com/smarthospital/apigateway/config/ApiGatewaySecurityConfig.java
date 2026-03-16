@@ -1,7 +1,9 @@
 package com.smarthospital.apigateway.config;
 
+import com.smarthospital.apigateway.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -13,7 +15,15 @@ import java.util.List;
 
 
 @Configuration
+
 public class ApiGatewaySecurityConfig {
+    private final JwtAuthenticationFilter jwtFilter;
+
+    public ApiGatewaySecurityConfig(JwtAuthenticationFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
+
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
@@ -22,6 +32,7 @@ public class ApiGatewaySecurityConfig {
                         .pathMatchers("/auth-service/auth/**").permitAll()
                         .anyExchange().permitAll()
                 )
+                .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION) // 🔥 KEY LINE
                 .build();
     }
 

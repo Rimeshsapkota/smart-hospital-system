@@ -1,7 +1,6 @@
 package com.smarthospital.authservice;
 
 
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,6 @@ public class JwtUtil {
                 .signWith(KEY)
                 .compact();
     }
-
     public static String extractUsername(String token) {
 
         return Jwts.parserBuilder()
@@ -36,20 +34,5 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-    }
-
-    public static boolean validateToken(String token) {
-
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(KEY)
-                    .build()
-                    .parseClaimsJws(token);
-
-            return true;
-
-        } catch (JwtException e) {
-            return false;
-        }
     }
 }

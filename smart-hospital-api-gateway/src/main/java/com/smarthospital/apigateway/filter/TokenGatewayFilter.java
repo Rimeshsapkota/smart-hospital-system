@@ -12,59 +12,61 @@ import reactor.core.publisher.Mono;
 
 import java.security.Key;
 import io.jsonwebtoken.security.Keys;
-
-
-
-@Component
-public class TokenGatewayFilter implements GatewayFilter {
-
-    private static final String SECRET =
-            "mySuperSecretKeyForJwtGeneration123456";
-
-    private static final Key KEY =
-            Keys.hmacShaKeyFor(SECRET.getBytes());
-
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String path = exchange.getRequest().getURI().getPath();
-
-        if (path.contains("/auth-service/auth/login") ||
-                path.contains("/auth-service/auth/register")) {
-            return chain.filter(exchange);
-        }
-        String authHeader = exchange.getRequest()
-                .getHeaders()
-                .getFirst(HttpHeaders.AUTHORIZATION);
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return unauthorized(exchange);
-        }
-
-        String token = authHeader.substring(7);
-
-        if (!validateToken(token)) {
-            return unauthorized(exchange);
-        }
-
-        return chain.filter(exchange);
-    }
-
-    private Mono<Void> unauthorized(ServerWebExchange exchange) {
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        return exchange.getResponse().setComplete();
-    }
-    public static boolean validateToken(String token) {
-
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(KEY)
-                    .build()
-                    .parseClaimsJws(token);
-
-            return true;
-
-        } catch (JwtException e) {
-            return false;
-        }
-    }
-}
+/**
+ * Implement this feature later
+ */
+//
+//
+//@Component
+//public class TokenGatewayFilter implements GatewayFilter {
+//
+//    private static final String SECRET =
+//            "mySuperSecretKeyForJwtGeneration123456";
+//
+//    private static final Key KEY =
+//            Keys.hmacShaKeyFor(SECRET.getBytes());
+//
+//    @Override
+//    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+//        String path = exchange.getRequest().getURI().getPath();
+//
+//        if (path.contains("/auth-service/auth/login") ||
+//                path.contains("/auth-service/auth/register")) {
+//            return chain.filter(exchange);
+//        }
+//        String authHeader = exchange.getRequest()
+//                .getHeaders()
+//                .getFirst(HttpHeaders.AUTHORIZATION);
+//
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            return unauthorized(exchange);
+//        }
+//
+//        String token = authHeader.substring(7);
+//
+//        if (!validateToken(token)) {
+//            return unauthorized(exchange);
+//        }
+//
+//        return chain.filter(exchange);
+//    }
+//
+//    private Mono<Void> unauthorized(ServerWebExchange exchange) {
+//        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//        return exchange.getResponse().setComplete();
+//    }
+//    public static boolean validateToken(String token) {
+//
+//        try {
+//            Jwts.parserBuilder()
+//                    .setSigningKey(KEY)
+//                    .build()
+//                    .parseClaimsJws(token);
+//
+//            return true;
+//
+//        } catch (JwtException e) {
+//            return false;
+//        }
+//    }
+//}
