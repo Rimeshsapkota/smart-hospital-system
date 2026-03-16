@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
@@ -27,8 +27,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return (exchange, chain) -> {
 
             if (routerValidator.isSecured.test(exchange.getRequest())) {
-
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                     throw new RuntimeException("Missing Authorization Header");
                 }
 
@@ -42,6 +42,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     try {
                         jwtUtils.validateToken(token);
                     } catch (Exception e) {
+                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                         throw new RuntimeException("Invalid Token");
                     }
                 }
@@ -51,7 +52,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         };
     }
 
-   @Data
     public static class Config {
         // empty for now
     }

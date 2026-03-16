@@ -7,10 +7,12 @@ import com.smarthospital.authservice.auth.service.AuthServiceImpl;
 import com.smarthospital.authservice.shared.ApiURL;
 import com.smarthospital.authservice.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,16 +25,12 @@ public class AuthenticationController {
         return authServiceImpl.signup(request);
     }
 
-    @PostMapping(ApiURL.ADMIN_SIGN_UP)
-    public UserResponse AdminSignup(@RequestBody @Validated SignUpRequest request) {
-        return authServiceImpl.signup(request);
-    }
 
     @PostMapping(ApiURL.USER_SIGN_IN)
-    public JwtAuthenticationResponse signin(@RequestBody SigninRequest request) {
-        return authServiceImpl.signin(request).block();
+    public Mono<ResponseEntity<JwtAuthenticationResponse>> signin(@RequestBody SigninRequest request) {
+        return authServiceImpl.signin(request)
+                .map(ResponseEntity::ok);
     }
-
 
 
 }

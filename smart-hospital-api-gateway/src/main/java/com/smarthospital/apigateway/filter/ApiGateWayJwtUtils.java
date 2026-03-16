@@ -14,17 +14,14 @@ public class ApiGateWayJwtUtils {
 
     private static final Key KEY =
             Keys.hmacShaKeyFor(SECRET.getBytes());
-    public  boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(KEY) // same KEY used during generation
                     .build()
                     .parseClaimsJws(token);
 
-            return true; // token is valid
-
-        } catch (Exception e) {
-            return false; // token is invalid or expired
+        } catch (Exception ignored) {
         }
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Optional;
 
@@ -57,22 +58,19 @@ public class AuthService implements AuthServiceImpl {
 
 
     public Mono<JwtAuthenticationResponse> signin(SigninRequest request) {
-
-        return userService.findByUsername(request.getEmail()) // returns Mono<UserDetails>
-                .flatMap(userDetails -> {
-                    // check password
-                    if (!passwordEncoders.matches(request.getPassword(), userDetails.getPassword())) {
-                        return Mono.error(new InvalidUserCredentialException(
-                                MessageConstant.INVALID_EMAIL_AND_PASSWORD_COMBINATION));
-                    }
-
-                    // generate token
-                    String token = jwtService.generateToken(userDetails);
-                    JwtAuthenticationResponse response =
-                            new JwtAuthenticationResponse(token, MessageConstant.SUCCESSFULLY_LOGIN);
-
-                    return Mono.just(response);
-                });
+        return userService.findByUsername(request.getEmail()) // reactive
+                .flatMap(userDetails ->
+                        // wrap password check + token generation in boundedElastic to avoid blocking
+                        Mono.fromCallable(() -> {
+                            if (!passwordEncoders.matches(request.getPassword(), userDetails.getPassword())) {
+                                throw new InvalidUserCredentialException(
+                                        MessageConstant.INVALID_EMAIL_AND_PASSWORD_COMBINATION
+                                );
+                            }
+                            String token = jwtService.generateToken(userDetails);
+                            return new JwtAuthenticationResponse(token, MessageConstant.SUCCESSFULLY_LOGIN);
+                        }).subscribeOn(Schedulers.boundedElastic())
+                );
     }
 
 
