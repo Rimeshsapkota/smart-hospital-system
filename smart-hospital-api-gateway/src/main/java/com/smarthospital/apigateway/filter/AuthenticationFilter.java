@@ -1,43 +1,58 @@
 package com.smarthospital.apigateway.filter;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Configuration
-public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentication> {
+@Component
+public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
+
     @Autowired
     private ApiGateWayJwtUtils jwtUtils;
 
     @Autowired
     private RouterValidator routerValidator;
 
-    @Override
-    public GatewayFilter apply(Authentication config) {
-        return((exchange, chain) -> {
-            if (routerValidator.isSecured.test(exchange.getRequest())) {
-                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    throw new RuntimeException("missing authorization header");
-                }
-                String authHeader = Objects.requireNonNull(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).getFirst();
-                if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    authHeader = authHeader.substring(7);
-                    try {
-                        jwtUtils.validateToken(authHeader);
+    public AuthenticationFilter() {
+        super(Config.class);
+    }
 
+    @Override
+    public GatewayFilter apply(Config config) {
+        return (exchange, chain) -> {
+
+            if (routerValidator.isSecured.test(exchange.getRequest())) {
+
+                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    throw new RuntimeException("Missing Authorization Header");
+                }
+
+                String authHeader = exchange.getRequest()
+                        .getHeaders()
+                        .getFirst(HttpHeaders.AUTHORIZATION);
+
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    String token = authHeader.substring(7);
+
+                    try {
+                        jwtUtils.validateToken(token);
                     } catch (Exception e) {
-                        throw new RuntimeException("An unauthorized access to run application");
+                        throw new RuntimeException("Invalid Token");
                     }
                 }
             }
-            return chain.filter(exchange);
-        });
 
+            return chain.filter(exchange);
+        };
     }
 
+   @Data
+    public static class Config {
+        // empty for now
+    }
 }

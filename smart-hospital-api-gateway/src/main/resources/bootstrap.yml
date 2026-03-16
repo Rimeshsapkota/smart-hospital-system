@@ -34,5 +34,5 @@ spring:
               predicates:
                 - Path=/patient-service/**
               filters:
-                -AuthenticationFilter
+                - AuthenticationFilter
 
