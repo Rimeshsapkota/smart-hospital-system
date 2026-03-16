@@ -30,9 +30,9 @@ public class ApiGatewaySecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth-service/auth/**").permitAll()
-                        .anyExchange().permitAll()
+                        .anyExchange().authenticated()
                 )
-                .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION) // 🔥 KEY LINE
+                .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();
     }
 

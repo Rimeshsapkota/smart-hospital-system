@@ -1,0 +1,18 @@
+package com.smarthospital.authservice.auth.service;
+
+
+import com.smarthospital.authservice.auth.config.JwtAuthenticationResponse;
+import com.smarthospital.authservice.auth.dto.SignUpRequest;
+import com.smarthospital.authservice.auth.dto.SigninRequest;
+import com.smarthospital.authservice.shared.UserResponse;
+import reactor.core.publisher.Mono;
+
+public interface AuthServiceImpl {
+
+    UserResponse signup(SignUpRequest request);
+
+    Mono<JwtAuthenticationResponse> signin(SigninRequest request);
+
+
+
+}

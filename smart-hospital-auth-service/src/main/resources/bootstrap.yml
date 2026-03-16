@@ -4,6 +4,12 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
 
+jwt:
+  secret: G3n3r4t3dS3cr3t
+  expiration: 604800000
+
+password:
+  salt: 1234567890
 #  cloud:
 #    config:
 #      fail-fast: true
