@@ -49,7 +49,7 @@ public class AuthService implements AuthServiceImpl {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoders.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(Role.PATIENT)
                 .build();
         userRepository.save(user);
         return new UserResponse(MessageConstant.SUCCESSFULLY_SAVE);

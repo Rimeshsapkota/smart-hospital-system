@@ -1,7 +1,8 @@
 package com.smarthospital.authservice.auth.entity;
 
 public enum Role {
-    USER,
+    PATIENT,
     ADMIN,
-    SUPER_ADMIN
+    SUPER_ADMIN,
+    STAFF
 }
