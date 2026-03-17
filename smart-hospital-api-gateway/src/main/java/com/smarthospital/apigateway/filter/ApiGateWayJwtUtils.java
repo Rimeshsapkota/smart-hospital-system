@@ -1,27 +1,32 @@
 package com.smarthospital.apigateway.filter;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 
 @Component
 public class ApiGateWayJwtUtils {
 
-    private static final String SECRET =
-            "mySuperSecretKeyForJwtGeneration123456";
+    @Value("${jwt.secret}")
+    private String secret;
 
-    private static final Key KEY =
-            Keys.hmacShaKeyFor(SECRET.getBytes());
+    private Key getKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
     public void validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(KEY) // same KEY used during generation
+                    .setSigningKey(getKey())
                     .build()
                     .parseClaimsJws(token);
-
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid JWT Token");
         }
     }
 }

@@ -56,11 +56,9 @@ public class AuthService implements AuthServiceImpl {
     }
 
 
-
     public Mono<JwtAuthenticationResponse> signin(SigninRequest request) {
         return userService.findByUsername(request.getEmail()) // reactive
                 .flatMap(userDetails ->
-                        // wrap password check + token generation in boundedElastic to avoid blocking
                         Mono.fromCallable(() -> {
                             if (!passwordEncoders.matches(request.getPassword(), userDetails.getPassword())) {
                                 throw new InvalidUserCredentialException(

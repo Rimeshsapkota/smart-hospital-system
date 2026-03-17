@@ -24,15 +24,12 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/user/signup",
             "/api/user/signin"
     );
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-
         String path = exchange.getRequest().getURI().getPath();
         if (openEndpoints.stream().anyMatch(uri -> path.startsWith(uri))) {
             return chain.filter(exchange); // skip public endpoints
         }
-
         final String authHeader = exchange.getRequest()
                 .getHeaders()
                 .getFirst(HttpHeaders.AUTHORIZATION);

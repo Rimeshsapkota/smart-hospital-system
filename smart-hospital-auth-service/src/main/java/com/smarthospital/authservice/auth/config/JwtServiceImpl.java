@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 /**
@@ -20,10 +21,12 @@ import java.util.Date;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-    SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
     @Value("${jwt.secret}")
     private String secret;
+
+    private Key getKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     @Value("${jwt.expiration}")
     private long expiration;
@@ -46,7 +49,7 @@ public class JwtServiceImpl implements JwtService {
                 .claim("role",user.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                .signWith(key)
+                .signWith(getKey(),SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -74,7 +77,7 @@ public class JwtServiceImpl implements JwtService {
      */
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
