@@ -1,5 +1,6 @@
 package com.smarthospital.authservice.auth.entity;
 
+import com.smarthospital.common_lib.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
@@ -24,9 +25,6 @@ public class User {
     private String email;
     private String password;
     private String forgetPasswordCode;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date forgetPasswordCodeTimestamp;
 
     @Enumerated(EnumType.STRING)
     private Role role;

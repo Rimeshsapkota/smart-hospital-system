@@ -15,10 +15,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByForgetPasswordCode(String code);
 
-    List<User> findByForgetPasswordCodeTimestampBefore(Timestamp twoMinutesAgo);
-
-    Long countByRole(Role role);
+    boolean existsByRole(Role role);
 }
 

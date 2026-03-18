@@ -7,9 +7,6 @@ public class MessageConstant {
     public static final String INVALID_EMAIL_AND_PASSWORD_COMBINATION = "Invalid email and password combination";
     public static final String ALREADY_REGISTER = "User is already register";
     public static final String SUCCESSFULLY_SAVE = "successfully save";
-    public static final String SERVER_ERROR = "Internal server error";
-    public static final String COMPARE_OLD_AND_NEW_PASSWORD ="old and new password is same!please write new password";
-    public static final String SUCCESSFULLY_UPDATED_THE_PASSWORD ="successfully updated the password";
-    public static final String COMPARE_CODE_NEW_AND_CONFIRM_PASSWORD ="code is not matched and confirm and new password is not same";
+    public static final String SUCCESSFULLY_UPDATED = "successfully update";
 
 }

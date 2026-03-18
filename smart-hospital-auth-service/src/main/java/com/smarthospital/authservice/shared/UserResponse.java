@@ -9,4 +9,5 @@ import lombok.*;
 @Builder
 public class UserResponse {
     private String message;
+    private Object obj;
 }
