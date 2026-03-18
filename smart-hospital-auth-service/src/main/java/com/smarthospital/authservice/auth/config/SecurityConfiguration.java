@@ -30,7 +30,9 @@ public class SecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/webjars/**",
-                                "/favicon.ico"
+                                "/favicon.ico",
+                                "/auth-service/v3/api-docs",
+                                "/patient-service/v3/api-docs"
                         ).permitAll()
                         .anyExchange().authenticated()
                 )

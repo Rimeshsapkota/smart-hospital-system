@@ -29,7 +29,9 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/webjars/",
             "/webjars/swagger-ui/index.html",
             "/favicon.ico",
-            "/v3/api-docs"
+            "/v3/api-docs",
+            "/auth-service/v3/api-docs",
+            "/patient-service/v3/api/docs"
     );
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
