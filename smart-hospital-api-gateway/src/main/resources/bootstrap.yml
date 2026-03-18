@@ -56,7 +56,7 @@ springdoc:
         primaryName: API Gateway Service
       - url: /auth-service/v3/api-docs
         name: Auth Service
-        primaryName: Category Service
+        primaryName: Patient Service
       - url: /patient-service/v3/api-docs
         name: Patient Service
-        primaryName: Product Service
+        primaryName: Patient Service

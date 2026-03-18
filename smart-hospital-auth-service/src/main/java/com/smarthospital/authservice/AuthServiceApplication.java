@@ -23,9 +23,9 @@ public class AuthServiceApplication {
 				.info(new Info()
 						.title("Smart Hospital API")
 						.version("1.0")
-						.description("API documentation for Smart Hospital System"))
+						.description("API documentation for Smart Hospital System for auth service"))
 				.externalDocs(new ExternalDocumentation()
-						.description("Project Docs")
+						.description("Auth service")
 						.url("https://your-docs-url.com"));
 	}
 }
