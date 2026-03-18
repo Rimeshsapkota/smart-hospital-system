@@ -22,12 +22,19 @@ public class JwtAuthenticationFilter implements WebFilter {
 
     private final List<String> openEndpoints = List.of(
             "/api/user/signup",
-            "/api/user/signin"
+            "/api/user/signin",
+            "/v3/api-docs/**",
+            "/v3/api-docs",
+            "/swagger-ui.html",
+            "/webjars/",
+            "/webjars/swagger-ui/index.html",
+            "/favicon.ico",
+            "/v3/api-docs"
     );
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (openEndpoints.stream().anyMatch(uri -> path.startsWith(uri))) {
+        if (openEndpoints.stream().anyMatch(path::startsWith)) {
             return chain.filter(exchange); // skip public endpoints
         }
         final String authHeader = exchange.getRequest()
