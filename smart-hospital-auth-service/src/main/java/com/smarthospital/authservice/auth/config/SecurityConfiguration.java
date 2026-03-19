@@ -3,6 +3,7 @@ package com.smarthospital.authservice.auth.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -23,6 +25,7 @@ public class SecurityConfiguration {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
+//                        .pathMatchers("/api/hospital/rollout").hasAuthority(Role.ADMIN.name())
                         .pathMatchers("/api/user/signin").permitAll()
                         .pathMatchers("/api/user/signup").permitAll()
                         .pathMatchers(

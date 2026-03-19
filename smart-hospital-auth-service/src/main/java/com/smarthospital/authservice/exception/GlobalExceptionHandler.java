@@ -74,8 +74,8 @@ public class GlobalExceptionHandler {
      * @param ex Exception object
      * @return error message
      */
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<ApiResponse> handleUserAlreadyExistException(UserAlreadyExistException ex) {
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<ApiResponse> handleUserAlreadyExistException(AlreadyExistException ex) {
         log.error(ex.getMessage());
         status.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(status);

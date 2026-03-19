@@ -1,13 +1,13 @@
 package com.smarthospital.authservice.auth.entity;
 
 import com.smarthospital.common_lib.entity.BaseEntity;
+import com.smarthospital.common_lib.entity.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 @Builder
@@ -37,7 +37,7 @@ public class User extends BaseEntity {
             add(new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
-                    return role.name();
+                    return getRole();
                 }
             });
         }};

@@ -8,11 +8,11 @@ import com.smarthospital.authservice.auth.config.UserDetailService;
 import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
-import com.smarthospital.authservice.auth.entity.Role;
+import com.smarthospital.common_lib.entity.Role;
 import com.smarthospital.authservice.auth.entity.User;
 import com.smarthospital.authservice.auth.repository.UserRepository;
 import com.smarthospital.authservice.exception.InvalidUserCredentialException;
-import com.smarthospital.authservice.exception.UserAlreadyExistException;
+import com.smarthospital.authservice.exception.AlreadyExistException;
 import com.smarthospital.authservice.shared.MessageConstant;
 import com.smarthospital.authservice.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
     public UserResponse signup(SignUpRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
         if (userOptional.isPresent()) {
-            throw new UserAlreadyExistException(MessageConstant.ALREADY_REGISTER);
+            throw new AlreadyExistException(MessageConstant.ALREADY_REGISTER);
         }
         var user = User.builder()
                 .firstName(request.getFirstName())

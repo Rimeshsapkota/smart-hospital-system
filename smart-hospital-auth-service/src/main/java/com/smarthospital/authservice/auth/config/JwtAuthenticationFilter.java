@@ -2,6 +2,7 @@ package com.smarthospital.authservice.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -58,15 +59,13 @@ public class JwtAuthenticationFilter implements WebFilter {
         return userDetailService.findByUsername(username)
                 .flatMap(userDetails -> {
                     if (jwtService.isTokenValid(jwtToken, userDetails)) {
-
-                        // extract roles from userDetails if needed
                         UsernamePasswordAuthenticationToken auth =
                                 new UsernamePasswordAuthenticationToken(
                                         userDetails,
                                         null,
-                                        Collections.emptyList() // use authorities from userDetails
+                                        userDetails.getAuthorities()// use authorities from userDetails
                                 );
-
+                        System.out.println(userDetails.getAuthorities());
                         return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
                     } else {
                         return unauthorized(exchange);
@@ -75,7 +74,7 @@ public class JwtAuthenticationFilter implements WebFilter {
     }
 
     private Mono<Void> unauthorized(ServerWebExchange exchange) {
-        exchange.getResponse().setStatusCode(org.springframework.http.HttpStatus.UNAUTHORIZED);
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
     }
 }

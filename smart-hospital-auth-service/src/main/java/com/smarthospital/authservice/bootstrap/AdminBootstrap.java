@@ -1,6 +1,6 @@
 package com.smarthospital.authservice.bootstrap;
 
-import com.smarthospital.authservice.auth.entity.Role;
+import com.smarthospital.common_lib.entity.Role;
 import com.smarthospital.authservice.auth.entity.User;
 import com.smarthospital.authservice.auth.repository.UserRepository;
 import com.smarthospital.authservice.auth.service.AuthServiceImpl;

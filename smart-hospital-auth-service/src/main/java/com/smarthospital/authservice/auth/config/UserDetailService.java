@@ -25,7 +25,6 @@ public class UserDetailService {
             if (user.isEmpty()) {
                 throw new UserNotFoundException(MessageConstant.USER_NOT_FOUND);
             }
-
             return new CustomUserDetails(
                     user.get().getEmail(),
                     user.get().getPassword(),
