@@ -18,8 +18,7 @@ public class HospitalRegisterService {
         this.passwordEncoder=passwordEncoder;
     }
     public UserResponse hospitalRegisterInSystem(HospitalDetailDto dto) {
-        Optional<HospitalDetail> hospitalDetail = hospitalDetailRepository.findByEmail(dto.getEmail());
-        if (hospitalDetail.isPresent()) {
+        if (hospitalDetailRepository.existsByEmail(dto.getEmail())) {
             throw new AlreadyExistException(MessageConstant.ALREADY_REGISTER);
         }
         HospitalDetail hospital = HospitalDetail.builder()
@@ -32,12 +31,18 @@ public class HospitalRegisterService {
                 .contactNumber(dto.getContactNumber())
                 .active(true)
                 .build();
-
         hospitalDetailRepository.save(hospital);
-
         return UserResponse.builder()
-                .obj(null)
                 .message("Hospital registered successfully")
                 .build();
+    }
+
+    public int activeHospitalInSystem(){
+        boolean active = hospitalDetailRepository.findByActiveTrue();
+        int count=0;
+        if(active){
+            count++;
+      }
+        return count;
     }
 }

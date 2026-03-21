@@ -24,15 +24,12 @@ public class JwtAuthenticationFilter implements WebFilter {
     private final List<String> openEndpoints = List.of(
             "/api/user/signup",
             "/api/user/signin",
-            "/v3/api-docs/**",
-            "/v3/api-docs",
-            "/swagger-ui.html",
-            "/webjars/",
-            "/webjars/swagger-ui/index.html",
+            "/v3/api-docs",           // startsWith covers /v3/api-docs/anything
+            "/swagger-ui",            // startsWith covers /swagger-ui/**
+            "/webjars/",              // startsWith covers all webjars
             "/favicon.ico",
-            "/v3/api-docs",
             "/auth-service/v3/api-docs",
-            "/patient-service/v3/api/docs"
+            "/patient-service/v3/api-docs"  // fixed typo
     );
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -65,7 +62,6 @@ public class JwtAuthenticationFilter implements WebFilter {
                                         null,
                                         userDetails.getAuthorities()// use authorities from userDetails
                                 );
-                        System.out.println(userDetails.getAuthorities());
                         return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
                     } else {
                         return unauthorized(exchange);

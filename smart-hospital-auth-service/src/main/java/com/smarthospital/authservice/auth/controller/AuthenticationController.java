@@ -30,6 +30,7 @@ public class AuthenticationController {
         return authService.signin(request)
                 .map(ResponseEntity::ok);
     }
+
   @GetMapping(ApiURL.USER_UPDATED)
     public UserResponse userResponse(@RequestParam Integer id, @RequestBody UpdateUserDto updateUserDto){
         return authService.updateUser(id, updateUserDto);
