@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -23,7 +24,7 @@ public class HospitalRegisterController {
     /**
      * fromCallable = "don't run now, just remember what to run — and let subscribeOn decide who runs it."
      * @param dto to display the user response
-     * @return userresponse
+     * @return user response
      */
     @PostMapping(ApiURL.HOSPITAL_REGISTER)
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -33,12 +34,21 @@ public class HospitalRegisterController {
                 .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
     }
 
-    @GetMapping("/active/all")
+    @GetMapping(ApiURL.UPDATE_HOSPITAL_DETAIL)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Mono<ResponseEntity<UserResponse>> updateHospitalDetailBySystemAdmin(@RequestParam Long id, @RequestBody HospitalDetaiRequestDto hospitalDetaiRequestDto) {
+        return Mono.fromCallable(()->hospitalService.updateHospitalDetailBySystemAdmin(id, hospitalDetaiRequestDto))
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(response->ResponseEntity.status(HttpStatus.CREATED).body(response));
+    }
+
+    @GetMapping(ApiURL.ACTIVE_HOSPITAL_IN_SYSTEM)
     @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ResponseEntity<List<HospitalDetailResponseDto>>> getAllActiveHospitals() {
         return Mono.fromCallable(hospitalService::getAllActiveHospitals)
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(ResponseEntity::ok);
     }
+
 
 }

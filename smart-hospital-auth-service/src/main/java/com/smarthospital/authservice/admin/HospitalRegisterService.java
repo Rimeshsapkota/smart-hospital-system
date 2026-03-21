@@ -1,6 +1,8 @@
 package com.smarthospital.authservice.admin;
 
 import com.smarthospital.authservice.exception.AlreadyExistException;
+import com.smarthospital.authservice.exception.NotFoundException;
+import com.smarthospital.authservice.exception.UserNotFoundException;
 import com.smarthospital.authservice.shared.MessageConstant;
 import com.smarthospital.authservice.shared.UserResponse;
 import com.smarthospital.common_lib.entity.Role;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +40,20 @@ public class HospitalRegisterService {
                 .message("Hospital registered successfully")
                 .build();
     }
+    public UserResponse updateHospitalDetailBySystemAdmin(Long id, HospitalDetaiRequestDto dto) {
+        HospitalDetail existingHospital = hospitalDetailRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Hospital not found"));
+        existingHospital.setUsername(dto.getUsername());
+        existingHospital.setEmail(dto.getEmail());
+        existingHospital.setHospitalName(dto.getHospitalName());
+        existingHospital.setHospitalAddress(dto.getHospitalAddress());
+        existingHospital.setContactNumber(dto.getContactNumber());
+        hospitalDetailRepository.save(existingHospital);
+        return UserResponse.builder()
+                .message("Hospital updated successfully")
+                .build();
+    }
+
         public List<HospitalDetailResponseDto> getAllActiveHospitals() {
             return hospitalDetailRepository.findByActiveTrue()
                     .stream()
@@ -47,7 +64,6 @@ public class HospitalRegisterService {
                             .hospitalName(hospital.getHospitalName())
                             .hospitalAddress(hospital.getHospitalAddress())
                             .contactNumber(hospital.getContactNumber())
-                            .active(hospital.isActive())
                             .role(hospital.getRole())
                             .build())
                     .collect(Collectors.toList());
