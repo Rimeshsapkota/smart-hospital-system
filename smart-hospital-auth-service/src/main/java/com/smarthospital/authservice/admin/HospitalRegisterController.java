@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class HospitalRegisterController {
@@ -20,21 +22,23 @@ public class HospitalRegisterController {
 
     /**
      * fromCallable = "don't run now, just remember what to run — and let subscribeOn decide who runs it."
-     * @param dto
-     * @return
+     * @param dto to display the user response
+     * @return userresponse
      */
     @PostMapping(ApiURL.HOSPITAL_REGISTER)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Mono<ResponseEntity<UserResponse>> registerHospital(@RequestBody HospitalDetailDto dto) {
+    public Mono<ResponseEntity<UserResponse>> registerHospital(@RequestBody HospitalDetaiRequestDto dto) {
         return Mono.fromCallable(() -> hospitalService.hospitalRegisterInSystem(dto))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
     }
 
-    @GetMapping("/active")
+    @GetMapping("/active/all")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public int getActive(){
-        return hospitalService.activeHospitalInSystem();
+    public Mono<ResponseEntity<List<HospitalDetailResponseDto>>> getAllActiveHospitals() {
+        return Mono.fromCallable(hospitalService::getAllActiveHospitals)
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(ResponseEntity::ok);
     }
 
 }

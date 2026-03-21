@@ -13,3 +13,6 @@ no result inside — operation had nothing to return
 Error  → container caught an exception
 example: Mono.error(new AlreadyExistException())
 not empty, not a value — something went wrong
+
+    "error:": "No HandlerResultHandler for MonoFlatMapMany"
+

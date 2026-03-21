@@ -7,7 +7,8 @@ import com.smarthospital.common_lib.entity.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HospitalRegisterService {
@@ -17,7 +18,7 @@ public class HospitalRegisterService {
         this.hospitalDetailRepository=hospitalDetailRepository;
         this.passwordEncoder=passwordEncoder;
     }
-    public UserResponse hospitalRegisterInSystem(HospitalDetailDto dto) {
+    public UserResponse hospitalRegisterInSystem(HospitalDetaiRequestDto dto) {
         if (hospitalDetailRepository.existsByEmail(dto.getEmail())) {
             throw new AlreadyExistException(MessageConstant.ALREADY_REGISTER);
         }
@@ -36,13 +37,20 @@ public class HospitalRegisterService {
                 .message("Hospital registered successfully")
                 .build();
     }
-
-    public int activeHospitalInSystem(){
-        boolean active = hospitalDetailRepository.findByActiveTrue();
-        int count=0;
-        if(active){
-            count++;
-      }
-        return count;
+        public List<HospitalDetailResponseDto> getAllActiveHospitals() {
+            return hospitalDetailRepository.findByActiveTrue()
+                    .stream()
+                    .map(hospital -> HospitalDetailResponseDto.builder()
+                            .id(hospital.getId())
+                            .username(hospital.getUsername())
+                            .email(hospital.getEmail())
+                            .hospitalName(hospital.getHospitalName())
+                            .hospitalAddress(hospital.getHospitalAddress())
+                            .contactNumber(hospital.getContactNumber())
+                            .active(hospital.isActive())
+                            .role(hospital.getRole())
+                            .build())
+                    .collect(Collectors.toList());
+        }
     }
-}
+
