@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Builder
 @Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

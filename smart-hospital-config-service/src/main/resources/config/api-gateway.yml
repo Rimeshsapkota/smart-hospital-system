@@ -12,4 +12,10 @@ cloud:
       max-attempts: 20
       initial-interval: 10000
       max-interval: 15000
-
+# ✅ ADD THIS — was completely missing
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true

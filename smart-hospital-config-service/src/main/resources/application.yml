@@ -6,12 +6,12 @@ spring:
     include: native
   application:
     name: config-service
-#  cloud:
-#    config:
-#      server:
-#        native:
-#          search-locations: classpath:/config/
-#        enabled: true
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config/
+        enabled: true
 eureka:
   client:
     enabled: true

@@ -1,0 +1,90 @@
+
+
+services:
+
+  # ✅ 1 — MySQL database
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: hms_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - smarthospital-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ✅ 2 — Discovery server (start first)
+  discovery-server:
+    image: smart-hospital-discovery-server-1.0:latest
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - smarthospital-network
+
+  # ✅ 3 — Config service (start after discovery)
+  config-service:
+    image: smart-hospital-config-service-1.0:latest
+    container_name: config-service
+    ports:
+      - "8888:8888"
+    environment:
+      EUREKA_URL: http://discovery-server:8761/eureka/   # ✅ add this
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+      SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+    depends_on:
+      - discovery-server
+    networks:
+      - smarthospital-network
+
+  # ✅ 4 — Auth service
+  auth-service:
+    image: smart-hospital-auth-service-1.4.0:latest
+    container_name: auth-service
+    ports:
+      - "8144:8144"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8020/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hms_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - discovery-server
+      - config-service
+      - mysql
+    networks:
+      - smarthospital-network
+
+  # ✅ 5 — Api gateway
+  api-gateway:
+    image: smart-hospital-api-gateway-1.0:latest
+    container_name: api-gateway
+    ports:
+      - "8020:8020"
+    environment:
+      EUREKA_URL: http://discovery-server:8761/eureka/
+      CONFIG_URL: http://config-service:8888    # ✅ add this
+    # ✅ add this
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+    depends_on:
+      - discovery-server
+      - config-service
+    networks:
+      - smarthospital-network
+
+# ✅ shared network
+networks:
+  smarthospital-network:
+    driver: bridge
+
+# ✅ persistent MySQL data
+volumes:
+  mysql-data:

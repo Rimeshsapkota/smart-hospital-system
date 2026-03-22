@@ -13,6 +13,8 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
+import static com.smarthospital.authservice.shared.ApiURL.ACTIVE_HOSPITAL_IN_SYSTEM;
+
 @RestController
 @RequiredArgsConstructor
 public class HospitalRegisterController {

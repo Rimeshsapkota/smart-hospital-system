@@ -14,7 +14,7 @@
 
 	<groupId>com.smarthospital</groupId>
 	<artifactId>smart-hospital-auth-service</artifactId>
-	<version>1.4.0</version>
+	<version>1.0</version>
 	<name>auth-service</name>
 	<description>Authentication microservice responsible for user login, registration, and JWT-based security in the Smart Hospital microservices system.</description>
 
