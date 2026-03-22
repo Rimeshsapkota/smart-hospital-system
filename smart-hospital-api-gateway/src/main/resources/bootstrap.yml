@@ -60,3 +60,12 @@ springdoc:
       - url: /patient-service/v3/api-docs
         name: Patient Service
         primaryName: Patient Service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
