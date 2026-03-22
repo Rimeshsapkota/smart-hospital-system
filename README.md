@@ -28,3 +28,11 @@ auth-service        localhost:8144      localhost:9144
 api-gateway         localhost:8020      localhost:9020
 mysql               localhost:3306      localhost:3307
 
+docker compose down
+docker compose up -d
+docker compose logs -f
+docker build -t smart-hospital-api-gateway.1.0:latest
+docker compose up -d --force-recreate auth-service
+docker rm -f config-service----->to delete service from container
+
+
