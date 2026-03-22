@@ -38,4 +38,13 @@ docker build -t smart-hospital-api-gateway.1.0:latest---->this need docker file 
 docker compose up -d --force-recreate image_name----->recreate the service
 docker rm -f config-service----->to remove service from container
 
+### from that one image you can create as many containers as you need
+docker run -d --name auth-service-1 -p 8144:8144 smart-hospital-auth-service-1.0:latest
+docker run -d --name auth-service-2 -p 8145:8144 smart-hospital-auth-service-1.0:latest
+
+### three step after update the code and deploy in the doceker
+mvn clean package → docker build → docker compose up --force-recreate
+
+
+
 
