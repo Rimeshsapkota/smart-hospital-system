@@ -22,6 +22,7 @@ spring:
 
 cloud:
   config:
+    override-system-properties: true
     fail-fast: true
     retry:
       max-attempts: 20
