@@ -4,7 +4,7 @@ services:
     image: mysql:8
     container_name: mysql
     environment:
-      MYSQL_DATABASE: hms_db
+      MYSQL_DATABASE: shm_auth_db
       MYSQL_ROOT_PASSWORD:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
@@ -80,7 +80,7 @@ services:
       - "8144:8144"
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hms_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shm_auth_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_CLOUD_CONFIG_OVERRIDESYSTEMPROPERTIES: "false"  # ✅ add this

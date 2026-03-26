@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/smart-hospital-config-service/pom.xml" />
         <option value="$PROJECT_DIR$/smart-hospital-patient-service/pom.xml" />
         <option value="$PROJECT_DIR$/smart-hospital-discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/smart-hospital-admin-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

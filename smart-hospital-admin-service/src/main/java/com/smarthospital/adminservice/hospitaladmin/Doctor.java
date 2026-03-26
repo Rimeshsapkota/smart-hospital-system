@@ -1,7 +1,5 @@
-package com.smarthospital.authservice.hospitaladmin;
+package com.smarthospital.adminservice.hospitaladmin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.smarthospital.authservice.systemadmin.HospitalDetail;
 import com.smarthospital.common_lib.entity.BaseEntity;
 import com.smarthospital.common_lib.entity.Role;
 import jakarta.persistence.*;
@@ -9,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mapstruct.Builder;
 
 @Entity
 @Table(name = "doctors")
