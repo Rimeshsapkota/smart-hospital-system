@@ -1,5 +1,6 @@
 package com.smarthospital.apigateway.filter;
 
+import io.jsonwebtoken.Claims;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -7,6 +8,7 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 
 
 @Component
@@ -21,6 +23,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public AuthenticationFilter() {
         super(Config.class);
     }
+
+    @Autowired
+    private AuthorizationFilter authorizationFilter;
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -40,7 +45,20 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     String token = authHeader.substring(7);
 
                     try {
-                        jwtUtils.validateToken(token);
+                        Claims claims = jwtUtils.validateTokenAndGetClaims(token);
+
+                        String userId = claims.getSubject();
+                        String userRole=claims.get("role",String.class);
+                        String userEmail = claims.get("email", String.class);
+
+                        ServerWebExchange modifiedExchange = exchange.mutate()
+                                .request(exchange.getRequest().mutate()
+                                        .header("X-User-Id", userId)
+                                        .header("X-User-Role", userRole)
+                                        .header("X-User-Email", userEmail)
+                                        .build())
+                                .build();
+                     authorizationFilter.checkAuthorization(modifiedExchange);
                     } catch (Exception e) {
                         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                         throw new RuntimeException("Invalid Token");

@@ -1,5 +1,6 @@
 package com.smarthospital.apigateway.filter;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -27,6 +28,18 @@ public class ApiGateWayJwtUtils {
                     .parseClaimsJws(token);
         } catch (Exception e) {
             throw new RuntimeException("Invalid JWT Token");
+        }
+    }
+
+    public Claims validateTokenAndGetClaims(String token) {
+        try{
+            return Jwts.parserBuilder()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJwt(token)
+                    .getBody();
+        }catch (Exception e){
+            throw new RuntimeException("Invalid JWT Token: " + e.getMessage());
         }
     }
 }
