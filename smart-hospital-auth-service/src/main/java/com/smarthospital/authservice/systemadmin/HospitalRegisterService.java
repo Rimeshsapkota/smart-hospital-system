@@ -1,8 +1,7 @@
-package com.smarthospital.authservice.admin;
+package com.smarthospital.authservice.systemadmin;
 
 import com.smarthospital.authservice.exception.AlreadyExistException;
 import com.smarthospital.authservice.exception.NotFoundException;
-import com.smarthospital.authservice.exception.UserNotFoundException;
 import com.smarthospital.authservice.shared.MessageConstant;
 import com.smarthospital.authservice.shared.UserResponse;
 import com.smarthospital.common_lib.entity.Role;
@@ -10,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

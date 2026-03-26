@@ -16,7 +16,7 @@
 	<artifactId>smart-hospital-auth-service</artifactId>
 	<version>1.0</version>
 	<name>auth-service</name>
-	<description>Authentication microservice responsible for user login, registration, and JWT-based security in the Smart Hospital microservices system.</description>
+	<description>Authentication microservice responsible for patient login, registration, and JWT-based security in the Smart Hospital microservices system.</description>
 
 	<properties>
 		<java.version>21</java.version>

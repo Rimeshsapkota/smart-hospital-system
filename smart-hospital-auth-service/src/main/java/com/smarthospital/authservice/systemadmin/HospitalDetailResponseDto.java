@@ -1,4 +1,4 @@
-package com.smarthospital.authservice.admin;
+package com.smarthospital.authservice.systemadmin;
 
 import com.smarthospital.common_lib.entity.Role;
 import lombok.Builder;

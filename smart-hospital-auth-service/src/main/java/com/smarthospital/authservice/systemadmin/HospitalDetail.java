@@ -1,11 +1,11 @@
-package com.smarthospital.authservice.admin;
+package com.smarthospital.authservice.systemadmin;
 
 import com.smarthospital.common_lib.entity.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "hospital_admins")
+@Table(name = "hospital_details")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -2,8 +2,8 @@ package com.smarthospital.authservice.auth.repository;
 
 
 
-import com.smarthospital.common_lib.entity.Role;
 import com.smarthospital.authservice.auth.entity.User;
+import com.smarthospital.common_lib.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

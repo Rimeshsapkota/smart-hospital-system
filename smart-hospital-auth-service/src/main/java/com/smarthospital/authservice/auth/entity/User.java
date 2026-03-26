@@ -4,6 +4,7 @@ import com.smarthospital.common_lib.entity.BaseEntity;
 import com.smarthospital.common_lib.entity.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
@@ -15,17 +16,12 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
     private String forgetPasswordCode;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 

@@ -1,4 +1,4 @@
-package com.smarthospital.authservice.admin;
+package com.smarthospital.authservice.systemadmin;
 
 import com.smarthospital.authservice.shared.ApiURL;
 import com.smarthospital.authservice.shared.UserResponse;
@@ -6,14 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
-
-import static com.smarthospital.authservice.shared.ApiURL.ACTIVE_HOSPITAL_IN_SYSTEM;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +22,7 @@ public class HospitalRegisterController {
      * @param dto to display the user response
      * @return user response
      */
-    @PostMapping(ApiURL.HOSPITAL_REGISTER)
+    @PostMapping(ApiURL.HOSPITAL_ROLL_OUT)
     @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ResponseEntity<UserResponse>> registerHospital(@RequestBody HospitalDetaiRequestDto dto) {
         return Mono.fromCallable(() -> hospitalService.hospitalRegisterInSystem(dto))

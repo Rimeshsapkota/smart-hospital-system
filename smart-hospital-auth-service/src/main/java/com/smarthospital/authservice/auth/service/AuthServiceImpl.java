@@ -8,8 +8,8 @@ import com.smarthospital.authservice.auth.config.UserDetailService;
 import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
-import com.smarthospital.common_lib.entity.Role;
 import com.smarthospital.authservice.auth.entity.User;
+import com.smarthospital.common_lib.entity.Role;
 import com.smarthospital.authservice.auth.repository.UserRepository;
 import com.smarthospital.authservice.exception.InvalidUserCredentialException;
 import com.smarthospital.authservice.exception.AlreadyExistException;
@@ -43,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
         if (userOptional.isPresent()) {
             throw new AlreadyExistException(MessageConstant.ALREADY_REGISTER);
         }
+        User patient1 = new User();
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -75,14 +76,14 @@ public class AuthServiceImpl implements AuthService {
         if (userFromDB.isEmpty()){
             return UserResponse.builder().message("user not exist").build();
         }
-        User user = userFromDB.get();
-        user.setAge(updateUserDto.getAge());
-        user.setContactNumber(updateUserDto.getContactNumber());
-        user.setAddress(updateUserDto.getAddress());
-        user.setGender(updateUserDto.getGender());
-        user.setBloodGroup(updateUserDto.getBloodGroup());
-        user.setParentContactNumber(updateUserDto.getParentContactNumber());
-        userRepository.save(user);
+        User patient = userFromDB.get();
+        patient.setAge(updateUserDto.getAge());
+        patient.setContactNumber(updateUserDto.getContactNumber());
+        patient.setAddress(updateUserDto.getAddress());
+        patient.setGender(updateUserDto.getGender());
+        patient.setBloodGroup(updateUserDto.getBloodGroup());
+        patient.setParentContactNumber(updateUserDto.getParentContactNumber());
+        userRepository.save(patient);
         return new UserResponse(MessageConstant.SUCCESSFULLY_UPDATED,null);
     }
 }

@@ -37,6 +37,8 @@ docker start container-name-------->Start a stopped container
 docker build -t smart-hospital-api-gateway.1.0:latest---->this need docker file in that folder to run 
 docker compose up -d --force-recreate image_name----->recreate the service
 docker rm -f config-service----->to remove service from container
+docker stats app-1 app-2 app-3 ---> check status
+
 
 ### from that one image you can create as many containers as you need
 docker run -d --name auth-service-1 -p 8144:8144 smart-hospital-auth-service-1.0:latest

@@ -1,8 +1,8 @@
 package com.smarthospital.common_lib.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -10,7 +10,15 @@ import java.util.Date;
 @MappedSuperclass
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor   // ✅ required
+@AllArgsConstructor
 public abstract class BaseEntity {
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private String email;
+    private String password;
     private String address;
     private double contactNumber;
     private int age;
