@@ -31,6 +31,14 @@ spring:
               filters :
                 - RewritePath=/auth-service/(?<segment>.*), /${segment}
 
+            - id: admin-service
+              uri: lb://admin-service
+              predicates:
+                - Path=/admin-service/**
+              filters:
+                - RewritePath=/admin-service/(?<segment>.*), /${segment}
+                - AuthenticationFilter
+
             - id: patient-service
               uri: lb://patient-service
               predicates:

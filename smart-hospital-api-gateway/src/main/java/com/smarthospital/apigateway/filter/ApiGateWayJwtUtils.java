@@ -20,23 +20,12 @@ public class ApiGateWayJwtUtils {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public void validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getKey())
-                    .build()
-                    .parseClaimsJws(token);
-        } catch (Exception e) {
-            throw new RuntimeException("Invalid JWT Token");
-        }
-    }
-
     public Claims validateTokenAndGetClaims(String token) {
         try{
             return Jwts.parserBuilder()
                     .setSigningKey(getKey())
                     .build()
-                    .parseClaimsJwt(token)
+                    .parseClaimsJws(token)
                     .getBody();
         }catch (Exception e){
             throw new RuntimeException("Invalid JWT Token: " + e.getMessage());
