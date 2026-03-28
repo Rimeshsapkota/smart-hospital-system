@@ -1,7 +1,6 @@
-package com.smarthospital.authservice.exception;
+package com.smarthospital.common_lib.exception;
 
-import com.smarthospital.authservice.shared.ApiResponse;
-import io.jsonwebtoken.security.SignatureException;
+import com.smarthospital.common_lib.shared.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,11 +25,11 @@ public class GlobalExceptionHandler {
      * @param exception Exception object
      * @return ResponseEntity with a message in the body
      */
-    @ExceptionHandler(SignatureException.class)
-    public ResponseEntity<?> handleSignatureException(SignatureException exception) {
-        CustomMessage errorResponse = new CustomMessage("Invalid JWT signature found, token is invalid");
-        return new ResponseEntity<>(errorResponse.toString(), HttpStatus.UNAUTHORIZED);
-    }
+//    @ExceptionHandler(SignatureException.class)
+//    public ResponseEntity<?> handleSignatureException(SignatureException exception) {
+//        CustomMessage errorResponse = new CustomMessage("Invalid JWT signature found, token is invalid");
+//        return new ResponseEntity<>(errorResponse.toString(), HttpStatus.UNAUTHORIZED);
+//    }
 
     /**
      * <p>

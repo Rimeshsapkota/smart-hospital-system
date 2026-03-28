@@ -1,4 +1,4 @@
-package com.smarthospital.authservice.exception;
+package com.smarthospital.common_lib.exception;
 
 import lombok.NoArgsConstructor;
 

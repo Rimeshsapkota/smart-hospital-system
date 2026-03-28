@@ -1,4 +1,4 @@
-package com.smarthospital.adminservice.hospitaladmin;
+package com.smarthospital.adminservice.Doctor;
 
 import com.smarthospital.common_lib.entity.BaseEntity;
 import com.smarthospital.common_lib.entity.Role;

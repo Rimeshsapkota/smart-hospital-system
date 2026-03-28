@@ -3,8 +3,8 @@ package com.smarthospital.authservice.auth.config;
 
 import com.smarthospital.authservice.auth.entity.User;
 import com.smarthospital.authservice.auth.repository.UserRepository;
-import com.smarthospital.authservice.exception.UserNotFoundException;
-import com.smarthospital.authservice.shared.MessageConstant;
+import com.smarthospital.common_lib.exception.UserNotFoundException;
+import com.smarthospital.common_lib.shared.MessageConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

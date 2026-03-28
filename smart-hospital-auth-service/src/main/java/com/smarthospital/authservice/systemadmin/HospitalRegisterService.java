@@ -1,9 +1,9 @@
 package com.smarthospital.authservice.systemadmin;
 
-import com.smarthospital.authservice.exception.AlreadyExistException;
-import com.smarthospital.authservice.exception.NotFoundException;
-import com.smarthospital.authservice.shared.MessageConstant;
-import com.smarthospital.authservice.shared.UserResponse;
+import com.smarthospital.common_lib.exception.AlreadyExistException;
+import com.smarthospital.common_lib.exception.NotFoundException;
+import com.smarthospital.common_lib.shared.MessageConstant;
+import com.smarthospital.common_lib.shared.UserResponse;
 import com.smarthospital.common_lib.entity.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

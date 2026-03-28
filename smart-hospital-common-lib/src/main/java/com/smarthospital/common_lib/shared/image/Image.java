@@ -1,4 +1,4 @@
-package com.smarthospital.authservice.shared.image;
+package com.smarthospital.common_lib.shared.image;
 
 
 import lombok.AllArgsConstructor;

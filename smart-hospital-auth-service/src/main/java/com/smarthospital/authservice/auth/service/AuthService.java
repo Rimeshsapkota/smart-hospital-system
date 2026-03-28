@@ -5,7 +5,7 @@ import com.smarthospital.authservice.auth.config.JwtAuthenticationResponse;
 import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
-import com.smarthospital.authservice.shared.UserResponse;
+import com.smarthospital.common_lib.shared.UserResponse;
 import reactor.core.publisher.Mono;
 
 public interface AuthService {

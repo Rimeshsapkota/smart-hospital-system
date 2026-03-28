@@ -1,7 +1,7 @@
 package com.smarthospital.authservice.systemadmin;
 
-import com.smarthospital.authservice.shared.ApiURL;
-import com.smarthospital.authservice.shared.UserResponse;
+import com.smarthospital.common_lib.shared.ApiURL;
+import com.smarthospital.common_lib.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

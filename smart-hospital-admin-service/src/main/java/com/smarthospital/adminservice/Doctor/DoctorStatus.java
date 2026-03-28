@@ -1,4 +1,4 @@
-package com.smarthospital.adminservice.hospitaladmin;
+package com.smarthospital.adminservice.Doctor;
 
 public enum DoctorStatus {
     ACTIVE,

@@ -1,4 +1,4 @@
-package com.smarthospital.authservice.shared;
+package com.smarthospital.common_lib.shared;
 
 public class MessageConstant {
     public static final String SEND_CODE_TO_THE_EMAIL ="successfully send code to the email";

@@ -1,4 +1,4 @@
-package com.smarthospital.authservice.shared;
+package com.smarthospital.common_lib.shared;
 
 
 import lombok.*;
