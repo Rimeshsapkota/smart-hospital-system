@@ -26,6 +26,7 @@ public class UserDetailService {
                 throw new UserNotFoundException(MessageConstant.USER_NOT_FOUND);
             }
             return new CustomUserDetails(
+                    user.get().getUserId(),
                     user.get().getEmail(),
                     user.get().getPassword(),
                     user.get().getRole()

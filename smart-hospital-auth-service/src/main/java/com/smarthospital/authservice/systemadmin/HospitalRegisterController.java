@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -23,23 +24,23 @@ public class HospitalRegisterController {
      * @return user response
      */
     @PostMapping(ApiURL.HOSPITAL_ROLL_OUT)
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Mono<ResponseEntity<UserResponse>> registerHospital(@RequestBody HospitalDetaiRequestDto dto) {
-        return Mono.fromCallable(() -> hospitalService.hospitalRegisterInSystem(dto))
+    @PreAuthorize("hasAuthority('HOSPITAL_ADMIN')")
+    public Mono<ResponseEntity<UserResponse>> registerHospital(@RequestBody HospitalDetaiRequestDto dto, Authentication authentication) {
+        return Mono.fromCallable(() -> hospitalService.hospitalRegisterInSystem(dto,authentication))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
     }
 
     @GetMapping(ApiURL.UPDATE_HOSPITAL_DETAIL)
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Mono<ResponseEntity<UserResponse>> updateHospitalDetailBySystemAdmin(@RequestParam Long id, @RequestBody HospitalDetaiRequestDto hospitalDetaiRequestDto) {
-        return Mono.fromCallable(()->hospitalService.updateHospitalDetailBySystemAdmin(id, hospitalDetaiRequestDto))
+    @PreAuthorize("hasAuthority('HOSPITAL_ADMIN')")
+    public Mono<ResponseEntity<UserResponse>> updateHospitalDetailByHospitalAdmin(@RequestParam Long id, @RequestBody HospitalDetaiRequestDto hospitalDetaiRequestDto) {
+        return Mono.fromCallable(()->hospitalService.updateHospitalDetailByHospitalAdmin(id, hospitalDetaiRequestDto))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(response->ResponseEntity.status(HttpStatus.CREATED).body(response));
     }
 
     @GetMapping(ApiURL.ACTIVE_HOSPITAL_IN_SYSTEM)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     public Mono<ResponseEntity<List<HospitalDetailResponseDto>>> getAllActiveHospitals() {
         return Mono.fromCallable(hospitalService::getAllActiveHospitals)
                 .subscribeOn(Schedulers.boundedElastic())

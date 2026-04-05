@@ -22,14 +22,16 @@ public class CustomUserDetails implements UserDetails {
 
     private String email;
     private String password;
+    private Integer userId;
     private Collection<? extends GrantedAuthority> authorities;
     @Enumerated(EnumType.STRING)
     private String role;
 
-    public CustomUserDetails(String email, String password, String role) {
+    public CustomUserDetails(Integer userId,String email, String password, String role) {
         this.role=role;
         this.email=email;
         this.password=password;
+        this.userId=userId;
     }
 
     @Override

@@ -20,11 +20,11 @@ public class AdminBootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Check if an admin already exists
-        boolean adminExists = userRepository.existsByRole(Role.ADMIN);
+        boolean adminExists = userRepository.existsByRole(Role.SUPER_ADMIN);
         if (!adminExists) {
             User admin = new User();
             admin.setEmail("admin1@gmail.com");
-            admin.setRole(Role.ADMIN);
+            admin.setRole(Role.SUPER_ADMIN);
             admin.setPassword(this.passwordEncoder().encode("Admin1@#"));
             admin.setFirstName("Admin");
             admin.setLastName("Admin");

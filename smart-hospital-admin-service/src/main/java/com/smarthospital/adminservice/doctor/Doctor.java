@@ -1,12 +1,11 @@
-package com.smarthospital.adminservice.Doctor;
+package com.smarthospital.adminservice.doctor;
 
 import com.smarthospital.common_lib.entity.BaseEntity;
 import com.smarthospital.common_lib.entity.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "doctors")
@@ -14,7 +13,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Doctor extends BaseEntity {
+@Builder
+public class Doctor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
@@ -23,8 +23,6 @@ public class Doctor extends BaseEntity {
     private String licenseNumber;     // medical license
     private Integer experienceYears;
     @Enumerated(EnumType.STRING)
-    private Role role;
-    @Enumerated(EnumType.STRING)
     private DoctorStatus status;
-    private boolean active;
+   private Integer userId;
 }

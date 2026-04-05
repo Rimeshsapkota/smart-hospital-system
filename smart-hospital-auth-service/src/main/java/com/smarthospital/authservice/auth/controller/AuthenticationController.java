@@ -9,6 +9,8 @@ import com.smarthospital.common_lib.shared.ApiURL;
 import com.smarthospital.common_lib.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -20,8 +22,8 @@ public class AuthenticationController {
     private final AuthService authService;
 
     @PostMapping(ApiURL.USER_SIGN_UP)
-    public UserResponse userSignup(@RequestBody @Validated SignUpRequest request) {
-        return authService.signup(request);
+    public UserResponse userSignup(@RequestBody @Validated SignUpRequest request, Authentication authentication) {
+        return authService.signup(request,authentication);
     }
 
 

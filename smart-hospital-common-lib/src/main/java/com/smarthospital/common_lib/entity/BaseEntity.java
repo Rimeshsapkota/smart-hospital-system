@@ -17,6 +17,7 @@ public abstract class BaseEntity {
     private String firstName;
     private String lastName;
     private String middleName;
+    @Column(unique = true)
     private String email;
     private String password;
     private String address;

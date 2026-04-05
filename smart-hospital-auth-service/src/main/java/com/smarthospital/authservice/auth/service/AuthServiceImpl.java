@@ -9,19 +9,34 @@ import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
 import com.smarthospital.authservice.auth.entity.User;
+import com.smarthospital.authservice.systemadmin.HospitalDetaiRequestDto;
+import com.smarthospital.authservice.systemadmin.HospitalDetail;
+import com.smarthospital.authservice.systemadmin.HospitalDetailRepository;
+import com.smarthospital.authservice.systemadmin.HospitalRegisterService;
 import com.smarthospital.common_lib.entity.Role;
 import com.smarthospital.authservice.auth.repository.UserRepository;
 import com.smarthospital.common_lib.exception.InvalidUserCredentialException;
 import com.smarthospital.common_lib.exception.AlreadyExistException;
+import com.smarthospital.common_lib.exception.NotFoundException;
+import com.smarthospital.common_lib.exception.UserNotFoundException;
 import com.smarthospital.common_lib.shared.MessageConstant;
 import com.smarthospital.common_lib.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.events.Event;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,23 +50,23 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoders;
     private final JwtService jwtService;
     private final UserDetailService userService;
-
-
+    private final HospitalRegisterService hospitalRegisterService;
     @Override
-    public UserResponse signup(SignUpRequest request) {
+    public UserResponse signup(SignUpRequest request,Authentication authentication) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
         if (userOptional.isPresent()) {
             throw new AlreadyExistException(MessageConstant.ALREADY_REGISTER);
         }
-        User patient1 = new User();
+        Role roleToAssign = extractRoleFromAuthentication(authentication,request);
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoders.encode(request.getPassword()))
-                .role(Role.PATIENT)
+                .role(roleToAssign)
                 .build();
         userRepository.save(user);
+
         return new UserResponse(MessageConstant.SUCCESSFULLY_SAVE,null);
     }
 
@@ -86,4 +101,29 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(patient);
         return new UserResponse(MessageConstant.SUCCESSFULLY_UPDATED,null);
     }
+
+
+    private Role extractRoleFromAuthentication(Authentication authentication, SignUpRequest signUpRequest) {
+        if (authentication == null || authentication.getAuthorities().isEmpty()) {
+            return null;
+        }
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            String roleString = authority.getAuthority();
+            if (roleString.contains("HOSPITAL_ADMIN")) {
+                if (signUpRequest.getRole().equals("DOCTOR")){
+                    return Role.DOCTOR;
+                }
+                else if (signUpRequest.getRole().equals("STAFF")){
+                    return Role.STAFF;
+                }
+                log.error("Role is not found {}", roleString);
+                throw new NotFoundException("Role is not found");
+            } else if (roleString.contains("SUPER_ADMIN")) {
+                return Role.HOSPITAL_ADMIN;
+            }
+        }
+        return null;
+    }
+
+
 }

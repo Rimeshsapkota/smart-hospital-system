@@ -6,11 +6,12 @@ import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
 import com.smarthospital.common_lib.shared.UserResponse;
+import org.springframework.security.core.Authentication;
 import reactor.core.publisher.Mono;
 
 public interface AuthService {
 
-    UserResponse signup(SignUpRequest request);
+    UserResponse signup(SignUpRequest request, Authentication authentication);
 
     Mono<JwtAuthenticationResponse> signin(SigninRequest request);
 

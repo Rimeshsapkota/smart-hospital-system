@@ -1,5 +1,8 @@
 package com.smarthospital.authservice.auth.dto;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.smarthospital.common_lib.entity.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +27,7 @@ public class SignUpRequest {
 
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,20}$", message = "Password must meet the specified criteria")
     private String password;
+
+    private String role;
 
 }

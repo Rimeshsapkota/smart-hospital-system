@@ -22,7 +22,7 @@ public class JwtAuthenticationFilter implements WebFilter {
     private final UserDetailService userDetailService;
 
     private final List<String> openEndpoints = List.of(
-            "/api/user/signup",
+//            "/api/user/signup",
             "/api/user/signin",
             "/v3/api-docs",           // startsWith covers /v3/api-docs/anything
             "/swagger-ui",            // startsWith covers /swagger-ui/**
@@ -73,4 +73,5 @@ public class JwtAuthenticationFilter implements WebFilter {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
     }
+
 }

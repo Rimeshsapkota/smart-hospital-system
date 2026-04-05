@@ -8,9 +8,6 @@ import lombok.Data;
 @Data
 public class HospitalDetailResponseDto {
     private Long id;
-    private String username;
-    private String email;
-    private Role role;
     private String hospitalName;
     private String hospitalAddress;
     private String contactNumber;

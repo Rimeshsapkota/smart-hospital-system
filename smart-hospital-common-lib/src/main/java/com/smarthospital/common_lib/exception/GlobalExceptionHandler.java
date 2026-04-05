@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> handleUserAlreadyExistException(AlreadyExistException ex) {
         log.error(ex.getMessage());
         status.setMessage(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(status);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(status);
     }
 
     @ExceptionHandler(InvalidUserCredentialException.class)

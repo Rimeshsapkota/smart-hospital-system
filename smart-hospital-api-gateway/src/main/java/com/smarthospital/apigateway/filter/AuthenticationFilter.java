@@ -47,18 +47,19 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     try {
                         Claims claims = jwtUtils.validateTokenAndGetClaims(token);
 
-                        String userId = claims.getSubject();
+                        String userEmail = claims.getSubject();
                         String userRole=claims.get("role",String.class);
-                        String userEmail = claims.get("email", String.class);
-
+                        Integer userId=claims.get("userId",Integer.class);
                         ServerWebExchange modifiedExchange = exchange.mutate()
                                 .request(exchange.getRequest().mutate()
-                                        .header("X-User-Id", userId)
+                                        .header("X-User-Id", String.valueOf(userId))
                                         .header("X-User-Role", userRole)
                                         .header("X-User-Email", userEmail)
                                         .build())
                                 .build();
                      authorizationFilter.checkAuthorization(modifiedExchange);
+                     return chain.filter(modifiedExchange);
+
                     } catch (Exception e) {
                         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                         throw new RuntimeException("Invalid Token");
