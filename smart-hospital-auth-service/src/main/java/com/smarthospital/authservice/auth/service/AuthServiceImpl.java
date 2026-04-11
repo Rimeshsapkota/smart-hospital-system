@@ -105,7 +105,7 @@ public class AuthServiceImpl implements AuthService {
 
     private Role extractRoleFromAuthentication(Authentication authentication, SignUpRequest signUpRequest) {
         if (authentication == null || authentication.getAuthorities().isEmpty()) {
-            return null;
+            return Role.PATIENT;
         }
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             String roleString = authority.getAuthority();
