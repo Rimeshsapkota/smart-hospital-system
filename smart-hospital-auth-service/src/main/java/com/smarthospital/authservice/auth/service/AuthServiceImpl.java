@@ -61,6 +61,7 @@ public class AuthServiceImpl implements AuthService {
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
+                .middleName(request.getMiddleName())
                 .email(request.getEmail())
                 .password(passwordEncoders.encode(request.getPassword()))
                 .role(roleToAssign)

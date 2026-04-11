@@ -1,8 +1,8 @@
 spring:
   application:
     name: auth-service
-#  config:
-#    import: optional:configserver:http://localhost:8888
+  config:
+    import: optional:configserver:http://localhost:8888
 
 jwt:
   secret: G3n3r4t3dS3cr3tiu898787ui9808798u87u767y7ui986tr5jhuytghhyijjkloiuyhgtrfdedf

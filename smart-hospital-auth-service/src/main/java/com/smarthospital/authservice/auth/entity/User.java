@@ -21,6 +21,7 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+    private String middleName;
     private String forgetPasswordCode;
     @Enumerated(EnumType.STRING)
     private Role role;
