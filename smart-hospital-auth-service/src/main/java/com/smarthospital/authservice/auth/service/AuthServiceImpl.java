@@ -62,7 +62,7 @@ public class AuthServiceImpl extends BaseService<User, SignUpRequest,Integer> im
                            JwtService jwtService,
                            UserDetailService userService,
                            HospitalRegisterService hospitalRegisterService) {
-        super(userRepository, mapper); // ✅ correct now
+        super(userRepository, mapper);
         this.userRepository = userRepository;
         this.passwordEncoders = passwordEncoders;
         this.jwtService = jwtService;

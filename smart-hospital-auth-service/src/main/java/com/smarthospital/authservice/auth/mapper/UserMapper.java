@@ -11,7 +11,6 @@ public class UserMapper implements GenericMapper<User, SignUpRequest> {
     @Override
     public SignUpRequest toDto(User user) {
         if (user == null) return null;
-
         SignUpRequest dto = new SignUpRequest();
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
