@@ -5,8 +5,8 @@ import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
 import com.smarthospital.authservice.auth.service.AuthService;
-import com.smarthospital.common_lib.pagination.BaseController;
-import com.smarthospital.common_lib.pagination.BaseService;
+import com.smarthospital.common_lib.pagination.PageResult;
+import com.smarthospital.common_lib.pagination.PaginationRequest;
 import com.smarthospital.common_lib.shared.ApiURL;
 import com.smarthospital.common_lib.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+
 @RestController
-public class AuthenticationController extends BaseController {
+public class AuthenticationController {
 
     private final AuthService authService;
 
-    public AuthenticationController(BaseService baseService,AuthService authService) {
-        super(baseService);
+    public AuthenticationController(AuthService authService) {
         this.authService=authService;
     }
 
@@ -42,5 +42,10 @@ public class AuthenticationController extends BaseController {
     public UserResponse userResponse(@RequestParam Integer id, @RequestBody UpdateUserDto updateUserDto){
         return authService.updateUser(id, updateUserDto);
   }
+
+    @PostMapping("/list")
+    public PageResult<SignUpRequest> getAll(@RequestBody PaginationRequest request) {
+        return authService.getAllUsers(request); // directly accessible ✅
+    }
 
 }

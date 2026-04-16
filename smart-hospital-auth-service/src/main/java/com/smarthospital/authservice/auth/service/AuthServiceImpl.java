@@ -19,10 +19,15 @@ import com.smarthospital.common_lib.exception.InvalidUserCredentialException;
 import com.smarthospital.common_lib.exception.AlreadyExistException;
 import com.smarthospital.common_lib.exception.NotFoundException;
 import com.smarthospital.common_lib.exception.UserNotFoundException;
+import com.smarthospital.common_lib.pagination.BaseService;
+import com.smarthospital.common_lib.pagination.GenericMapper;
+import com.smarthospital.common_lib.pagination.PageResult;
+import com.smarthospital.common_lib.pagination.PaginationRequest;
 import com.smarthospital.common_lib.shared.MessageConstant;
 import com.smarthospital.common_lib.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -43,14 +48,28 @@ import java.util.Optional;
  * This class is used to create the login and signup
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl extends BaseService<User, SignUpRequest,Integer> implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoders;
     private final JwtService jwtService;
     private final UserDetailService userService;
     private final HospitalRegisterService hospitalRegisterService;
+
+    public AuthServiceImpl(UserRepository userRepository,
+                           GenericMapper<User, SignUpRequest> mapper,
+                           PasswordEncoder passwordEncoders,
+                           JwtService jwtService,
+                           UserDetailService userService,
+                           HospitalRegisterService hospitalRegisterService) {
+        super(userRepository, mapper); // ✅ correct now
+        this.userRepository = userRepository;
+        this.passwordEncoders = passwordEncoders;
+        this.jwtService = jwtService;
+        this.userService = userService;
+        this.hospitalRegisterService = hospitalRegisterService;
+    }
+
     @Override
     public UserResponse signup(SignUpRequest request,Authentication authentication) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
@@ -126,5 +145,12 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
+    @Override
+    public PageResult<SignUpRequest> getAllUsers(PaginationRequest request) {
+        String sortField = Optional.ofNullable(request.getSortField())
+                .orElse("userId");
+        request.setSortField(sortField);
+        return findAll(request);
+    }
 
 }
