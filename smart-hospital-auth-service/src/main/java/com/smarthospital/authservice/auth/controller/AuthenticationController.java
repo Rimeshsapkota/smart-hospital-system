@@ -5,21 +5,26 @@ import com.smarthospital.authservice.auth.dto.SignUpRequest;
 import com.smarthospital.authservice.auth.dto.SigninRequest;
 import com.smarthospital.authservice.auth.dto.UpdateUserDto;
 import com.smarthospital.authservice.auth.service.AuthService;
+import com.smarthospital.common_lib.pagination.BaseController;
+import com.smarthospital.common_lib.pagination.BaseService;
 import com.smarthospital.common_lib.shared.ApiURL;
 import com.smarthospital.common_lib.shared.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthenticationController extends BaseController {
 
     private final AuthService authService;
+
+    public AuthenticationController(BaseService baseService,AuthService authService) {
+        super(baseService);
+        this.authService=authService;
+    }
 
     @PostMapping(ApiURL.USER_SIGN_UP)
     public UserResponse userSignup(@RequestBody @Validated SignUpRequest request, Authentication authentication) {
